@@ -9,9 +9,7 @@ License: MIT License + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: 
-    R (>= 2.10),
-    dplyr,
-    ggplot2
+    R (>= 2.10)
 Imports:
 	dplyr,
 	ggplot2
