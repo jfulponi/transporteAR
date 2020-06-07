@@ -43,8 +43,8 @@ plotSistau <- function(annual = TRUE) {
       theme(axis.title.x = element_text(color="white"))+
       labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
            y = "Pesos")+
-      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*20, "M"),
-                         breaks = 10^7 * c(100,200,300,400)*2
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
       )
   }
   else
@@ -57,8 +57,8 @@ plotSistau <- function(annual = TRUE) {
       theme(axis.title.x = element_text(color="white"))+
       labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
            y = "Pesos")+
-      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*20, "M"),
-                         breaks = 10^7 * c(100,200,300,400)*2
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
       )
   }
 }
@@ -108,8 +108,8 @@ plotRCC <- function(annual = TRUE) {
       theme(axis.title.x = element_text(color="white"))+
       labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
            y = "Pesos")+
-      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*20, "M"),
-                         breaks = 10^7 * c(100,200,300,400)*2
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
       )
   }
   else
@@ -122,8 +122,8 @@ plotRCC <- function(annual = TRUE) {
       theme(axis.title.x = element_text(color="white"))+
       labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
            y = "Pesos")+
-      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*20, "M"),
-                         breaks = 10^7 * c(100,200,300,400)*2
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
       )
   }
 }
@@ -173,8 +173,8 @@ plotCCP <- function(annual = TRUE) {
       theme(axis.title.x = element_text(color="white"))+
       labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
            y = "Pesos")+
-      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*20, "M"),
-                         breaks = 10^7 * c(100,200,300,400)*2
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
       )
   }
   else
@@ -187,8 +187,8 @@ plotCCP <- function(annual = TRUE) {
       theme(axis.title.x = element_text(color="white"))+
       labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
            y = "Pesos")+
-      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*20, "M"),
-                         breaks = 10^7 * c(100,200,300,400)*2
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
       )
   }
 }
@@ -198,7 +198,7 @@ plotCCP <- function(annual = TRUE) {
 #' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
 #' @return
 #' @details
-#' @rdname getCCP
+#' @rdname getsubsidiosycomp
 #' @author Juan Ignacio Fulponi
 #' @source Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
 #' @references
@@ -222,7 +222,7 @@ getsubsidiosycomp <- function(annual = TRUE) {
 #' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
 #' @return
 #' @details
-#' @rdname plotCCP
+#' @rdname plotsubsidiosycomp
 #' @author Juan Ignacio Fulponi
 #' @source Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
 #' @references
@@ -258,3 +258,157 @@ plotsubsidiosycomp <- function(annual = TRUE) {
   }
 }
 
+
+#' @title getPax
+#' @description Get all available pax data by period.
+#' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
+#' @return
+#' @param type Choose the transport mode. It can be "COLECTIVO", "TREN", "SUBTE" o "TODOS"
+#' @details
+#' @rdname getPax
+#' @author Juan Ignacio Fulponi
+#' @source CNRT.
+#' @references
+
+getPax <- function(annual = TRUE, type = "TODOS") {
+  if (annual == TRUE && type == 'COLECTIVO') {cancelaciones_mes_mmodo %>%
+      mutate(year = format(as.Date(periodo), "%Y")) %>%
+      filter(modo == 'COLECTIVO')%>%
+      group_by(year,modo)%>%
+      summarise(pax = sum(pax))
+
+  } else if (annual == TRUE && type == 'TREN') {cancelaciones_mes_mmodo %>%
+      mutate(year = format(as.Date(periodo), "%Y")) %>%
+      filter(modo == 'TREN')%>%
+      group_by(year,modo)%>%
+      summarise(pax = sum(pax))
+
+  } else if (annual == TRUE && type == 'SUBTE') {cancelaciones_mes_mmodo %>%
+      mutate(year = format(as.Date(periodo), "%Y")) %>%
+      filter(modo == 'SUBTE')%>%
+      group_by(year,modo)%>%
+      summarise(pax = sum(pax))
+
+  } else if (annual == TRUE && type == 'TODOS') {cancelaciones_mes_mmodo %>%
+      mutate(year = format(as.Date(periodo), "%Y")) %>%
+      group_by(year,modo)%>%
+      summarise(pax = sum(pax))
+
+  }else if (annual == FALSE && type == 'COLECTIVO') {cancelaciones_mes_mmodo %>%
+      filter(modo == 'COLECTIVO')%>%
+      group_by(periodo,modo)%>%
+      summarise(pax = sum(pax))
+
+  } else if (annual == FALSE && type == 'TREN') {cancelaciones_mes_mmodo %>%
+      filter(modo == 'TREN')%>%
+      group_by(periodo,modo)%>%
+      summarise(pax = sum(pax))
+
+  } else if (annual == FALSE && type == 'SUBTE') {cancelaciones_mes_mmodo %>%
+      filter(modo == 'SUBTE')%>%
+      group_by(periodo,modo)%>%
+      summarise(pax = sum(pax))
+  } else {cancelaciones_mes_mmodo}
+}
+
+#' @title plotPax
+#' @description Plots all available pax data by period.
+#' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
+#' @param type Choose the transport mode. It can be "COLECTIVO", "TREN", "SUBTE" o "TODOS".
+#' @return
+#' @details
+#' @rdname plotPax
+#' @author Juan Ignacio Fulponi
+#' @source Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
+#' @references
+
+plotPax <- function(annual = TRUE, type = 'TODOS'){
+  if (annual == TRUE && type == 'COLECTIVO') {cancelaciones_mes_mmodo %>%
+      mutate(year = format(as.Date(periodo), "%Y")) %>%
+      filter(modo == 'COLECTIVO')%>%
+      group_by(year,modo)%>%
+      summarise(pax = sum(pax))%>%
+      ggplot(aes(year, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos de colectivos, en el sistema SUBE.", y = "Pasajeros")+
+      scale_y_continuous(labels = paste0(c(100,200,300,400)*10, "M"),
+                         breaks = 10^7 * c(100,200,300,400))
+
+    } else if (annual == TRUE && type == 'TREN') {cancelaciones_mes_mmodo %>%
+        mutate(year = format(as.Date(periodo), "%Y")) %>%
+      filter(modo == 'TREN')%>%
+        group_by(year,modo)%>%
+      summarise(pax = sum(pax))%>%
+      ggplot(aes(year, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos de trenes, en el sistema SUBE.", y = "Pasajeros")+
+        scale_y_continuous(labels = paste0(c(100,200,300,400), "M"),
+                           breaks = 10^6 * c(100,200,300,400))
+
+      } else if (annual == TRUE && type == 'SUBTE') {cancelaciones_mes_mmodo %>%
+          mutate(year = format(as.Date(periodo), "%Y")) %>%
+      filter(modo == 'SUBTE')%>%
+          group_by(year,modo)%>%
+      summarise(pax = sum(pax))%>%
+      ggplot(aes(year, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos de subtes, en el sistema SUBE.", y = "Pasajeros")+
+          scale_y_continuous(labels = paste0(c(100,200,300,400), "M"),
+                             breaks = 10^6 * c(100,200,300,400))
+
+        } else if (annual == TRUE && type == 'TODOS') {cancelaciones_mes_mmodo %>%
+      mutate(year = format(as.Date(periodo), "%Y")) %>%
+            group_by(year,modo)%>%
+      summarise(pax = sum(pax))%>%
+      ggplot(aes(year, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos en el sistema SUBE.", y = "Pasajeros")+
+            scale_y_continuous(labels = paste0(c(100,200,300,400), "M"),
+                               breaks = 10^6 * c(100,200,300,400))
+
+          }else if (annual == FALSE && type == 'COLECTIVO') {cancelaciones_mes_mmodo %>%
+      filter(modo == 'COLECTIVO')%>%
+              group_by(periodo, modo)%>%
+      summarise(pax = sum(pax))%>%
+      ggplot(aes(periodo, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos de colectivos, en el sistema SUBE.", y = "Pasajeros")+
+              scale_y_continuous(labels = paste0(c(100,200,300,400), "M"),
+                                 breaks = 10^6 * c(100,200,300,400))
+
+            } else if (annual == FALSE && type == 'TREN') {cancelaciones_mes_mmodo %>%
+      filter(modo == 'TREN')%>%
+                group_by(periodo, modo)%>%
+                summarise(pax = sum(pax))%>%
+                ggplot(aes(periodo, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos de trenes, en el sistema SUBE.", y = "Pasajeros")+
+                scale_y_continuous(labels = paste0(c(100,200,300,400), "M"),
+                                   breaks = 10^6 * c(100,200,300,400))
+
+              } else if (annual == FALSE && type == 'SUBTE') {cancelaciones_mes_mmodo %>%
+      filter(modo == 'SUBTE')%>%
+                  group_by(periodo, modo)%>%
+                  summarise(pax = sum(pax))%>%
+                  ggplot(aes(periodo, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos de subtes, en el sistema SUBE.", y = "Pasajeros")+
+                  scale_y_continuous(labels = paste0(c(100,200,300,400), "M"),
+                                     breaks = 10^6 * c(100,200,300,400))
+
+                } else {cancelaciones_mes_mmodo %>%
+      ggplot(aes(periodo, pax, fill = modo, colour=modo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title = "Pasajeros pagos en el sistema SUBE.", y = "Pasajeros")+
+                    scale_y_continuous(labels = paste0(c(100,200,300,400)*10, "M"),
+                                       breaks = 10^7 * c(100,200,300,400)
+                    )}
+}

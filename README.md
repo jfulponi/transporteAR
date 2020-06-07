@@ -4,6 +4,8 @@ Base de datos de subsidios y compensaciones al transporte público de la Repúbl
 # versión 0.1.0
 Agregados datos de SISTAU y funciones GET y PLOT.
 
-
 # versión 0.1.1
 Agregados datos de RCC y CCP.
+
+# versión 0.1.2
+Agregados datos de CNRT de pasajeros pagos (SUBE) en colectivos, trenes y subtes (2016 / ago-2019).

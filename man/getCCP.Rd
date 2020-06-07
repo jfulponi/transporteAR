@@ -2,38 +2,25 @@
 % Please edit documentation in R/getSistau.R
 \name{getCCP}
 \alias{getCCP}
-\alias{getsubsidiosycomp}
 \title{getCCP}
 \source{
-Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
-
 Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
 }
 \usage{
 getCCP(annual = TRUE)
-
-getsubsidiosycomp(annual = TRUE)
 }
 \arguments{
 \item{annual}{`TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.}
 }
 \value{
 
-
-
 }
 \description{
 Get CCP (Compensaciones complementarias para las provincias) data by period.
-
-Get all subsidies data by period.
 }
 \references{
 
-
-
 }
 \author{
-Juan Ignacio Fulponi
-
 Juan Ignacio Fulponi
 }
