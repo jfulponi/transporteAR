@@ -3,7 +3,7 @@ Type: Package
 Title: Subsidios al Transporte Público de la República Argentina.
 Version: 0.1.0
 Author: Juan Ignacio Fulponi
-Maintainer: Juan Ignacio Fulponi <jfulponi@economicas.uba.ar>
+Maintainer: Juan Ignacio Fulponi <juanifulponi@gmail.com>
 Description: Dataset de subsidios y compensaciones al transporte automotor en Argentina, desde 2002 hasta la fecha. 
 License: MIT License + file LICENSE
 Encoding: UTF-8
