@@ -7,7 +7,7 @@
 Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
 }
 \usage{
-plotsubsidiosycomp(annual = TRUE)
+plotsubsidiosycomp(annual = TRUE, precios_corrientes = TRUE)
 }
 \arguments{
 \item{annual}{`TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.}

@@ -206,12 +206,12 @@ plotCCP <- function(annual = TRUE) {
 getsubsidiosycomp <- function(annual = TRUE) {
   if (annual == TRUE){df %>%
       mutate(year = format(periodo, "%Y")) %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
       group_by(year,tipo)%>%
       summarise(monto = sum(monto))}
   else
   {df %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
       group_by(periodo, tipo)%>%
       summarise(monto = sum(monto))}
 }
@@ -227,10 +227,10 @@ getsubsidiosycomp <- function(annual = TRUE) {
 #' @source Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
 #' @references
 
-plotsubsidiosycomp <- function(annual = TRUE) {
-  if (annual == TRUE){df %>%
+plotsubsidiosycomp <- function(annual = TRUE, precios_corrientes = TRUE) {
+  if (annual == TRUE && precios_corrientes == TRUE){df %>%
       mutate(year = format(periodo, "%Y")) %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
       group_by(year,tipo)%>%
       summarise(monto = sum(monto))%>%
       ggplot(aes(year, monto, fill = tipo, colour=tipo))+
@@ -241,10 +241,22 @@ plotsubsidiosycomp <- function(annual = TRUE) {
       scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
                          breaks = 10^8 * c(100,200,300,400)*3
       )
-  }
-  else
-  {df %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU"))%>%
+  } else if (annual == FALSE && precios_corrientes == FALSE) {
+    df %>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      group_by(periodo, tipo)%>%
+      summarise(monto = sum(monto)/max(index_infla))%>%
+      ggplot(aes(periodo, monto, fill = tipo, colour=tipo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title="Subsidios y compensaciones al transporte automotor, a precios de junio de 2002",
+           y = "Pesos")+
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
+      )
+  } else if (annual == FALSE && precios_corrientes == TRUE) {
+    df %>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
       group_by(periodo, tipo)%>%
       summarise(monto = sum(monto))%>%
       ggplot(aes(periodo, monto, fill = tipo, colour=tipo))+
@@ -254,6 +266,19 @@ plotsubsidiosycomp <- function(annual = TRUE) {
            y = "Pesos")+
       scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
                          breaks = 10^8 * c(100,200,300,400)*3
+      )
+  } else if (annual == TRUE && precios_corrientes == FALSE){df %>%
+      mutate(year = format(periodo, "%Y")) %>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      group_by(year,tipo)%>%
+      summarise(monto = sum(monto)/max(index_infla))%>%
+      ggplot(aes(year, monto, fill = tipo, colour=tipo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title="Subsidios y compensaciones al transporte automotor, a precios de junio de 2002",
+           y = "Pesos")+
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*10, "M"),
+                         breaks = 10^6 * c(100,200,300,400)*10
       )
   }
 }
