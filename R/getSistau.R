@@ -193,6 +193,71 @@ plotCCP <- function(annual = TRUE) {
   }
 }
 
+#' @title getGASOIL
+#' @description Get GASOIL subsidies data by period.
+#' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
+#' @return
+#' @details
+#' @rdname getGASOIL
+#' @author Juan Ignacio Fulponi
+#' @source Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
+#' @references
+
+getGASOIL <- function(annual = TRUE) {
+  if (annual == TRUE){df %>%
+      mutate(year = format(periodo, "%Y")) %>%
+      filter(tipo=="GASOIL")%>%
+      group_by(year,tipo)%>%
+      summarise(monto = sum(monto))}
+  else
+  {df %>%
+      filter(tipo=="GASOIL")%>%
+      group_by(periodo, tipo)%>%
+      summarise(monto = sum(monto))}
+}
+
+
+#' @title plotGASOIL
+#' @description Plots GASOIL data by period.
+#' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
+#' @return
+#' @details
+#' @rdname plotGASOIL
+#' @author Juan Ignacio Fulponi
+#' @source Ministerio de Obras Públicas y Ministerio de Transporte de la Nación.
+#' @references
+
+plotGASOIL <- function(annual = TRUE) {
+  if (annual == TRUE){df %>%
+      mutate(year = format(periodo, "%Y")) %>%
+      filter(tipo=="GASOIL")%>%
+      group_by(year,tipo)%>%
+      summarise(monto = sum(monto))%>%
+      ggplot(aes(year, monto, fill = tipo, colour=tipo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
+           y = "Pesos")+
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
+      )
+  }
+  else
+  {df %>%
+      filter(tipo=="GASOIL")%>%
+      group_by(periodo, tipo)%>%
+      summarise(monto = sum(monto))%>%
+      ggplot(aes(periodo, monto, fill = tipo, colour=tipo))+
+      geom_col()+
+      theme(axis.title.x = element_text(color="white"))+
+      labs(title="Subsidios y compensaciones al transporte automotor, a precios corrientes",
+           y = "Pesos")+
+      scale_y_continuous(labels = paste0("$", c(100,200,300,400)*300, "M"),
+                         breaks = 10^8 * c(100,200,300,400)*3
+      )
+  }
+}
+
 #' @title getsubsidiosycomp
 #' @description Get all subsidies data by period.
 #' @param annual `TRUE` or `FALSE`. If `TRUE`, returns annual data. If `FALSE` returns monthly data., Default: `TRUE`.
@@ -206,12 +271,12 @@ plotCCP <- function(annual = TRUE) {
 getsubsidiosycomp <- function(annual = TRUE) {
   if (annual == TRUE){df %>%
       mutate(year = format(periodo, "%Y")) %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social", "GASOIL"))%>%
       group_by(year,tipo)%>%
       summarise(monto = sum(monto))}
   else
   {df %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social", "GASOIL"))%>%
       group_by(periodo, tipo)%>%
       summarise(monto = sum(monto))}
 }
@@ -230,7 +295,7 @@ getsubsidiosycomp <- function(annual = TRUE) {
 plotsubsidiosycomp <- function(annual = TRUE, precios_corrientes = TRUE) {
   if (annual == TRUE && precios_corrientes == TRUE){df %>%
       mutate(year = format(periodo, "%Y")) %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social", "GASOIL"))%>%
       group_by(year,tipo)%>%
       summarise(monto = sum(monto))%>%
       ggplot(aes(year, monto, fill = tipo, colour=tipo))+
@@ -243,7 +308,7 @@ plotsubsidiosycomp <- function(annual = TRUE, precios_corrientes = TRUE) {
       )
   } else if (annual == FALSE && precios_corrientes == FALSE) {
     df %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social", "GASOIL"))%>%
       group_by(periodo, tipo)%>%
       summarise(monto = sum(monto)/max(index_infla))%>%
       ggplot(aes(periodo, monto, fill = tipo, colour=tipo))+
@@ -256,7 +321,7 @@ plotsubsidiosycomp <- function(annual = TRUE, precios_corrientes = TRUE) {
       )
   } else if (annual == FALSE && precios_corrientes == TRUE) {
     df %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social", "GASOIL"))%>%
       group_by(periodo, tipo)%>%
       summarise(monto = sum(monto))%>%
       ggplot(aes(periodo, monto, fill = tipo, colour=tipo))+
@@ -269,7 +334,7 @@ plotsubsidiosycomp <- function(annual = TRUE, precios_corrientes = TRUE) {
       )
   } else if (annual == TRUE && precios_corrientes == FALSE){df %>%
       mutate(year = format(periodo, "%Y")) %>%
-      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social"))%>%
+      filter(tipo %in% c("CCP", "RCC", "SISTAU", "Atributo Social", "GASOIL"))%>%
       group_by(year,tipo)%>%
       summarise(monto = sum(monto)/max(index_infla))%>%
       ggplot(aes(year, monto, fill = tipo, colour=tipo))+
@@ -437,3 +502,4 @@ plotPax <- function(annual = TRUE, type = 'TODOS'){
                                        breaks = 10^7 * c(100,200,300,400)
                     )}
 }
+

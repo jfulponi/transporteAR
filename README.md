@@ -12,3 +12,6 @@ Agregados datos de CNRT de pasajeros pagos (SUBE) en colectivos, trenes y subtes
 
 # versión 0.1.3
 Agregados datos de ATRIBUTO SOCIAL en get/plotsubsidiosycomp. Agregada función de graficar en pesos de junio de 2002 con plotsubsidiosycomp(precios_corrientes=FALSE)
+
+# versión 0.1.4
+Agregados datos ESTIMADOS de subsidios al Gasoil. 
